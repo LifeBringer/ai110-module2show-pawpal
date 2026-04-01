@@ -1,0 +1,56 @@
+classDiagram
+    class Task {
+        +str description
+        +str time
+        +int duration
+        +str priority
+        +str frequency
+        +str task_id
+        +bool is_complete
+        +str due_date
+        +int start_minutes
+        +int end_minutes
+        +mark_complete()
+        +reopen()
+        +move_to(new_time)
+        +recurrence_next_date(anchor) str
+        +clone_for_next_occurrence(anchor) Task
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +int age
+        +list~Task~ tasks
+        +add_task(task) Task
+        +remove_task(task_id) bool
+        +tasks_for_display() list
+    }
+
+    class Owner {
+        +str name
+        +list~Pet~ pets
+        +add_pet(pet) Pet
+        +remove_pet(pet_name) bool
+        +find_pet(name) Pet
+        +all_tasks() list
+        +tasks_for_pet(pet_name) list
+        +save_to_json(filepath)
+        +load_from_json(filepath)$
+    }
+
+    class Scheduler {
+        +Owner owner
+        +get_daily_schedule() list
+        +sort_by_time(tasks) list
+        +sort_by_priority(tasks) list
+        +filter_tasks(pet_name, is_complete) list
+        +detect_conflicts() list
+        +handle_recurring_tasks(anchor) list
+        +find_next_available_slot(duration) str
+        +weighted_sort(tasks) list
+    }
+
+    Owner "1" *-- "0..*" Pet : owns
+    Pet "1" *-- "0..*" Task : schedules
+    Scheduler --> Owner : analyzes
